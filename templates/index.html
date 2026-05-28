@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>EduRecommend AI</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <main class="container">
+        <section class="hero">
+            <h1>EduRecommend AI</h1>
+            <p>
+                Sistema de recomendación semántico de contenidos educativos basado en agentes inteligentes.
+            </p>
+            <p class="muted">
+                El agente aprende automáticamente observando qué contenidos abre el usuario.
+            </p>
+        </section>
+
+        <section class="card">
+            <h2>1. Perfil inicial del usuario</h2>
+            <p>
+                Selecciona intereses iniciales. Después, el sistema seguirá aprendiendo según los contenidos consultados.
+            </p>
+
+            <form action="/recommendations" method="POST">
+                <div class="interests">
+                    {% for key, value in interests.items() %}
+                    <label class="interest-item">
+                        <input type="checkbox" name="interests" value="{{ key }}">
+                        {{ value }}
+                    </label>
+                    {% endfor %}
+                </div>
+
+                <button type="submit">Generar recomendaciones</button>
+            </form>
+        </section>
+
+        <section class="card">
+            <h2>2. Intereses actuales del usuario</h2>
+
+            {% if user_interests %}
+                <div class="chips">
+                    {% for interest in user_interests %}
+                        <span class="chip">{{ interest }}</span>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p>No hay intereses registrados todavía.</p>
+            {% endif %}
+        </section>
+
+        <section class="card">
+            <h2>3. Contenidos disponibles</h2>
+            <p>
+                Al abrir un contenido, se registra una interacción RDF. Si el usuario abre varios contenidos de una misma categoría,
+                el Agente de Perfil aprende esa tendencia.
+            </p>
+
+            <div class="grid">
+                {% for item in contents %}
+                <article class="recommendation">
+                    <h3>{{ item.nombre }}</h3>
+                    <p>{{ item.descripcion }}</p>
+                    <p><strong>Categoría:</strong> {{ item.categoria }}</p>
+                    <p><strong>Nivel:</strong> {{ item.nivel }}</p>
+                    <a class="button-link" href="/content/{{ item.contenido_id }}">Abrir contenido</a>
+                </article>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>4. Tendencias aprendidas por el agente</h2>
+
+            {% if trends %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Categoría</th>
+                            <th>Interacciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for trend in trends %}
+                        <tr>
+                            <td>{{ trend.categoria }}</td>
+                            <td>{{ trend.total }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>Aún no hay tendencias. Abre algunos contenidos para que el agente aprenda.</p>
+            {% endif %}
+        </section>
+    </main>
+</body>
+</html>

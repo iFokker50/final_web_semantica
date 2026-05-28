@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Recomendaciones - EduRecommend AI</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <main class="container">
+        <section class="hero">
+            <h1>Recomendaciones personalizadas</h1>
+            <p>
+                Estas recomendaciones se generan con SPARQL a partir del perfil RDF del usuario.
+            </p>
+        </section>
+
+        <section class="card">
+            <h2>Intereses seleccionados manualmente</h2>
+
+            {% if selected_interests %}
+                <div class="chips">
+                    {% for interest in selected_interests %}
+                        <span class="chip">{{ interest }}</span>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p>No seleccionaste intereses nuevos. Se usaron las tendencias aprendidas.</p>
+            {% endif %}
+        </section>
+
+        <section class="card">
+            <h2>Intereses actuales del usuario</h2>
+
+            {% if user_interests %}
+                <div class="chips">
+                    {% for interest in user_interests %}
+                        <span class="chip">{{ interest }}</span>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p>No hay intereses registrados todavía.</p>
+            {% endif %}
+        </section>
+
+        <section class="card">
+            <h2>Contenidos recomendados</h2>
+
+            {% if recommendations %}
+                <div class="grid">
+                    {% for item in recommendations %}
+                        <article class="recommendation">
+                            <h3>{{ item.nombre }}</h3>
+                            <p>{{ item.descripcion }}</p>
+                            <p><strong>Categoría:</strong> {{ item.categoria }}</p>
+                            <p><strong>Nivel:</strong> {{ item.nivel }}</p>
+                            <a class="button-link" href="/content/{{ item.contenido_id }}">Abrir contenido</a>
+                        </article>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p>No se encontraron recomendaciones para los intereses seleccionados.</p>
+            {% endif %}
+        </section>
+
+        <section class="card">
+            <h2>Tendencias aprendidas por el agente</h2>
+
+            {% if trends %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Categoría</th>
+                            <th>Interacciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for trend in trends %}
+                        <tr>
+                            <td>{{ trend.categoria }}</td>
+                            <td>{{ trend.total }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>Aún no hay tendencias registradas.</p>
+            {% endif %}
+
+            <a class="back-link" href="/">Volver</a>
+        </section>
+    </main>
+</body>
+</html>

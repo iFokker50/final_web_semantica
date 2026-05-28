@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ content.nombre }} - EduRecommend AI</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <main class="container">
+        <section class="hero">
+            <h1>{{ content.nombre }}</h1>
+            <p>
+                Esta vista registra una interacción del usuario. Con estas interacciones, el Agente de Perfil aprende tendencias.
+            </p>
+        </section>
+
+        <section class="card">
+            <h2>Detalle del contenido</h2>
+
+            <p>{{ content.descripcion }}</p>
+
+            <p><strong>Nivel:</strong> {{ content.nivel }}</p>
+
+            <p><strong>Categorías:</strong></p>
+            <div class="chips">
+                {% for category in content.categorias %}
+                    <span class="chip">{{ category }}</span>
+                {% endfor %}
+            </div>
+
+            <p>
+                <a class="button-link" href="{{ content.url }}" target="_blank">
+                    Abrir recurso externo
+                </a>
+            </p>
+        </section>
+
+        <section class="card">
+            <h2>Intereses actuales del usuario</h2>
+
+            {% if user_interests %}
+                <div class="chips">
+                    {% for interest in user_interests %}
+                        <span class="chip">{{ interest }}</span>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p>No hay intereses registrados todavía.</p>
+            {% endif %}
+        </section>
+
+        <section class="card">
+            <h2>Tendencias aprendidas</h2>
+
+            {% if trends %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Categoría</th>
+                            <th>Interacciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for trend in trends %}
+                        <tr>
+                            <td>{{ trend.categoria }}</td>
+                            <td>{{ trend.total }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>Aún no hay tendencias registradas.</p>
+            {% endif %}
+
+            <a class="back-link" href="/">Volver al inicio</a>
+        </section>
+    </main>
+</body>
+</html>

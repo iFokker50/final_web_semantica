@@ -1,0 +1,108 @@
+@prefix edu: <http://www.semanticweb.org/edurecommend#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+edu:contenido1 a edu:Contenido ;
+    edu:descripcion "Curso introductorio sobre conceptos básicos de inteligencia artificial." ;
+    edu:nivel "Básico" ;
+    edu:nombre "Introducción a la Inteligencia Artificial" ;
+    edu:perteneceACategoria edu:InteligenciaArtificial ;
+    edu:url "https://example.com/ia-basica" .
+
+edu:contenido10 a edu:Contenido ;
+    edu:descripcion "Recurso para aprender cómo representar conocimiento usando ontologías y RDF." ;
+    edu:nivel "Intermedio" ;
+    edu:nombre "Modelado semántico de datos" ;
+    edu:perteneceACategoria edu:BasesDeDatos,
+        edu:WebSemantica ;
+    edu:url "https://example.com/modelado-semantico" .
+
+edu:contenido2 a edu:Contenido ;
+    edu:descripcion "Curso inicial para aprender programación con Python." ;
+    edu:nivel "Básico" ;
+    edu:nombre "Python desde cero" ;
+    edu:perteneceACategoria edu:Programacion ;
+    edu:url "https://example.com/python" .
+
+edu:contenido3 a edu:Contenido ;
+    edu:descripcion "Contenido educativo sobre tecnologías de Web Semántica." ;
+    edu:nivel "Intermedio" ;
+    edu:nombre "Fundamentos de RDF y OWL" ;
+    edu:perteneceACategoria edu:WebSemantica ;
+    edu:url "https://example.com/rdf-owl" .
+
+edu:contenido4 a edu:Contenido ;
+    edu:descripcion "Guía práctica para consultar datos RDF usando SPARQL." ;
+    edu:nivel "Básico" ;
+    edu:nombre "Consultas SPARQL para principiantes" ;
+    edu:perteneceACategoria edu:WebSemantica ;
+    edu:url "https://example.com/sparql" .
+
+edu:contenido5 a edu:Contenido ;
+    edu:descripcion "Curso sobre diseño y consulta de bases de datos relacionales." ;
+    edu:nivel "Básico" ;
+    edu:nombre "Bases de Datos Relacionales" ;
+    edu:perteneceACategoria edu:BasesDeDatos ;
+    edu:url "https://example.com/bases-datos" .
+
+edu:contenido7 a edu:Contenido ;
+    edu:descripcion "Recurso práctico para construir agentes inteligentes usando Python." ;
+    edu:nivel "Intermedio" ;
+    edu:nombre "Diseño de agentes inteligentes con Python" ;
+    edu:perteneceACategoria edu:InteligenciaArtificial,
+        edu:Programacion ;
+    edu:url "https://example.com/agentes-python" .
+
+edu:contenido8 a edu:Contenido ;
+    edu:descripcion "Material avanzado sobre consultas semánticas aplicadas a recomendaciones." ;
+    edu:nivel "Avanzado" ;
+    edu:nombre "SPARQL aplicado a sistemas de recomendación" ;
+    edu:perteneceACategoria edu:InteligenciaArtificial,
+        edu:WebSemantica ;
+    edu:url "https://example.com/sparql-recomendacion" .
+
+edu:interaccion_usuario1_contenido6_20260527201004141075 a edu:Interaccion ;
+    edu:fecha "2026-05-27T20:10:04.141075"^^xsd:string ;
+    edu:realizadaPor edu:usuario1 ;
+    edu:sobreContenido edu:contenido6 .
+
+edu:interaccion_usuario1_contenido9_20260527201148794902 a edu:Interaccion ;
+    edu:fecha "2026-05-27T20:11:48.794902"^^xsd:string ;
+    edu:realizadaPor edu:usuario1 ;
+    edu:sobreContenido edu:contenido9 .
+
+edu:contenido6 a edu:Contenido ;
+    edu:descripcion "Contenido sobre cómo usar agentes inteligentes en procesos automatizados." ;
+    edu:nivel "Avanzado" ;
+    edu:nombre "Automatización con agentes inteligentes" ;
+    edu:perteneceACategoria edu:Automatizacion,
+        edu:InteligenciaArtificial ;
+    edu:url "https://example.com/agentes-automatizacion" .
+
+edu:contenido9 a edu:Contenido ;
+    edu:descripcion "Curso práctico sobre automatización de tareas usando scripts en Python." ;
+    edu:nivel "Intermedio" ;
+    edu:nombre "Automatización de procesos con Python" ;
+    edu:perteneceACategoria edu:Automatizacion,
+        edu:Programacion ;
+    edu:url "https://example.com/automatizacion-python" .
+
+edu:usuario1 a edu:Usuario ;
+    edu:nombre "Camilo" ;
+    edu:tieneInteres edu:Automatizacion,
+        edu:BasesDeDatos .
+
+edu:Automatizacion a edu:Categoria ;
+    edu:nombre "Automatización" .
+
+edu:BasesDeDatos a edu:Categoria ;
+    edu:nombre "Bases de Datos" .
+
+edu:Programacion a edu:Categoria ;
+    edu:nombre "Programación" .
+
+edu:InteligenciaArtificial a edu:Categoria ;
+    edu:nombre "Inteligencia Artificial" .
+
+edu:WebSemantica a edu:Categoria ;
+    edu:nombre "Web Semántica" .
+
