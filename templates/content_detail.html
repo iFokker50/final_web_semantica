@@ -10,7 +10,7 @@
         <section class="hero">
             <h1>{{ content.nombre }}</h1>
             <p>
-                Esta vista registra una interacción del usuario. Con estas interacciones, el Agente de Perfil aprende tendencias.
+                Esta vista registra una interacción del usuario. También permite calificar el contenido para mejorar las recomendaciones.
             </p>
         </section>
 
@@ -27,6 +27,27 @@
                     <span class="chip">{{ category }}</span>
                 {% endfor %}
             </div>
+
+            {% if content.highly_rated %}
+                <p><span class="tag-rating">Muy bien calificado: {{ content.average_rating }}/5</span></p>
+            {% elif content.rating_count > 0 %}
+                <p><span class="tag-neutral">Calificación promedio: {{ content.average_rating }}/5</span></p>
+            {% else %}
+                <p><span class="tag-neutral">Sin calificaciones registradas</span></p>
+            {% endif %}
+
+            <form action="/rate" method="POST" class="rating-form">
+                <input type="hidden" name="content_id" value="{{ content.contenido_id }}">
+                <select name="rating" required>
+                    <option value="">Calificar contenido</option>
+                    <option value="1">1 - No recomendado</option>
+                    <option value="2">2 - Poco útil</option>
+                    <option value="3">3 - Aceptable</option>
+                    <option value="4">4 - Bueno</option>
+                    <option value="5">5 - Excelente</option>
+                </select>
+                <button type="submit">Guardar calificación</button>
+            </form>
 
             <p>
                 <a class="button-link" href="{{ content.url }}" target="_blank">

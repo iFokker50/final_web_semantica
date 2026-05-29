@@ -10,7 +10,7 @@
         <section class="hero">
             <h1>Recomendaciones personalizadas</h1>
             <p>
-                Estas recomendaciones se generan con SPARQL a partir del perfil RDF del usuario.
+                Estas recomendaciones se generan con SPARQL a partir del perfil RDF del usuario, sus tendencias y las calificaciones.
             </p>
         </section>
 
@@ -24,7 +24,7 @@
                     {% endfor %}
                 </div>
             {% else %}
-                <p>No seleccionaste intereses nuevos. Se usaron las tendencias aprendidas.</p>
+                <p>No seleccionaste intereses nuevos. Se usaron intereses existentes y aprendidos.</p>
             {% endif %}
         </section>
 
@@ -51,9 +51,39 @@
                         <article class="recommendation">
                             <h3>{{ item.nombre }}</h3>
                             <p>{{ item.descripcion }}</p>
-                            <p><strong>Categoría:</strong> {{ item.categoria }}</p>
+                            <p><strong>Categorías:</strong> {{ item.categoria }}</p>
                             <p><strong>Nivel:</strong> {{ item.nivel }}</p>
-                            <a class="button-link" href="/content/{{ item.contenido_id }}">Abrir contenido</a>
+
+                            {% if item.match_interes %}
+                                <span class="tag-success">Coincide con tus intereses</span>
+                            {% endif %}
+
+                            {% if item.match_tendencia %}
+                                <span class="tag-warning">Relacionado con tus tendencias</span>
+                            {% endif %}
+
+                            {% if item.highly_rated %}
+                                <span class="tag-rating">Muy bien calificado: {{ item.average_rating }}/5</span>
+                            {% elif item.rating_count > 0 %}
+                                <span class="tag-neutral">Calificación promedio: {{ item.average_rating }}/5</span>
+                            {% endif %}
+
+                            <div class="card-actions">
+                                <a class="button-link" href="/content/{{ item.contenido_id }}">Abrir contenido</a>
+
+                                <form action="/rate" method="POST" class="rating-form">
+                                    <input type="hidden" name="content_id" value="{{ item.contenido_id }}">
+                                    <select name="rating" required>
+                                        <option value="">Calificar</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                    </select>
+                                    <button type="submit">Guardar</button>
+                                </form>
+                            </div>
                         </article>
                     {% endfor %}
                 </div>

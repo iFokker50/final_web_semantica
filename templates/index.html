@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>EduRecommend AI</title>
     <link rel="stylesheet" href="/static/styles.css">
 </head>
+
 <body>
     <main class="container">
         <section class="hero">
@@ -13,14 +15,15 @@
                 Sistema de recomendación semántico de contenidos educativos basado en agentes inteligentes.
             </p>
             <p class="muted">
-                El agente aprende automáticamente observando qué contenidos abre el usuario.
+                El agente aprende mediante intereses, interacciones y calificaciones del usuario.
             </p>
         </section>
 
         <section class="card">
             <h2>1. Perfil inicial del usuario</h2>
             <p>
-                Selecciona intereses iniciales. Después, el sistema seguirá aprendiendo según los contenidos consultados.
+                Selecciona intereses iniciales. Después, el sistema seguirá aprendiendo según los contenidos consultados
+                y calificados.
             </p>
 
             <form action="/recommendations" method="POST">
@@ -41,21 +44,26 @@
             <h2>2. Intereses actuales del usuario</h2>
 
             {% if user_interests %}
-                <div class="chips">
-                    {% for interest in user_interests %}
-                        <span class="chip">{{ interest }}</span>
-                    {% endfor %}
-                </div>
+            <div class="chips">
+                {% for interest in user_interests %}
+                <span class="chip">{{ interest }}</span>
+                {% endfor %}
+            </div>
             {% else %}
-                <p>No hay intereses registrados todavía.</p>
+            <p>No hay intereses registrados todavía.</p>
             {% endif %}
+
+            <form action="/reset-profile" method="POST"
+                onsubmit="return confirm('¿Seguro que deseas reiniciar el perfil del usuario?');">
+                <button type="submit" class="danger-button">Reiniciar perfil</button>
+            </form>
         </section>
 
         <section class="card">
-            <h2>3. Contenidos disponibles</h2>
+            <h2>3. Contenidos disponibles ordenados según tu perfil</h2>
             <p>
-                Al abrir un contenido, se registra una interacción RDF. Si el usuario abre varios contenidos de una misma categoría,
-                el Agente de Perfil aprende esa tendencia.
+                Los contenidos se organizan dando prioridad a tus intereses actuales, tendencias aprendidas y
+                calificaciones altas.
             </p>
 
             <div class="grid">
@@ -63,9 +71,39 @@
                 <article class="recommendation">
                     <h3>{{ item.nombre }}</h3>
                     <p>{{ item.descripcion }}</p>
-                    <p><strong>Categoría:</strong> {{ item.categoria }}</p>
+                    <p><strong>Categorías:</strong> {{ item.categoria }}</p>
                     <p><strong>Nivel:</strong> {{ item.nivel }}</p>
-                    <a class="button-link" href="/content/{{ item.contenido_id }}">Abrir contenido</a>
+
+                    {% if item.match_interes %}
+                    <span class="tag-success">Coincide con tus intereses</span>
+                    {% endif %}
+
+                    {% if item.match_tendencia %}
+                    <span class="tag-warning">Relacionado con tus tendencias</span>
+                    {% endif %}
+
+                    {% if item.highly_rated %}
+                    <span class="tag-rating">Muy bien calificado: {{ item.average_rating }}/5</span>
+                    {% elif item.rating_count > 0 %}
+                    <span class="tag-neutral">Calificación promedio: {{ item.average_rating }}/5</span>
+                    {% endif %}
+
+                    <div class="card-actions">
+                        <a class="button-link" href="/content/{{ item.contenido_id }}">Abrir contenido</a>
+
+                        <form action="/rate" method="POST" class="rating-form">
+                            <input type="hidden" name="content_id" value="{{ item.contenido_id }}">
+                            <select name="rating" required>
+                                <option value="">Calificar</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>
+                            <button type="submit">Guardar</button>
+                        </form>
+                    </div>
                 </article>
                 {% endfor %}
             </div>
@@ -75,26 +113,27 @@
             <h2>4. Tendencias aprendidas por el agente</h2>
 
             {% if trends %}
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Categoría</th>
-                            <th>Interacciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for trend in trends %}
-                        <tr>
-                            <td>{{ trend.categoria }}</td>
-                            <td>{{ trend.total }}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Categoría</th>
+                        <th>Interacciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for trend in trends %}
+                    <tr>
+                        <td>{{ trend.categoria }}</td>
+                        <td>{{ trend.total }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
             {% else %}
-                <p>Aún no hay tendencias. Abre algunos contenidos para que el agente aprenda.</p>
+            <p>Aún no hay tendencias. Abre algunos contenidos para que el agente aprenda.</p>
             {% endif %}
         </section>
     </main>
 </body>
+
 </html>

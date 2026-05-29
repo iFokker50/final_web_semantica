@@ -13,6 +13,7 @@
     <owl:Class rdf:about="#Categoria"/>
     <owl:Class rdf:about="#Recomendacion"/>
     <owl:Class rdf:about="#Interaccion"/>
+    <owl:Class rdf:about="#Calificacion"/>
 
     <owl:ObjectProperty rdf:about="#tieneInteres">
         <rdfs:domain rdf:resource="#Usuario"/>
@@ -35,12 +36,10 @@
     </owl:ObjectProperty>
 
     <owl:ObjectProperty rdf:about="#realizadaPor">
-        <rdfs:domain rdf:resource="#Interaccion"/>
         <rdfs:range rdf:resource="#Usuario"/>
     </owl:ObjectProperty>
 
     <owl:ObjectProperty rdf:about="#sobreContenido">
-        <rdfs:domain rdf:resource="#Interaccion"/>
         <rdfs:range rdf:resource="#Contenido"/>
     </owl:ObjectProperty>
 
@@ -62,6 +61,10 @@
 
     <owl:DatatypeProperty rdf:about="#fecha">
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="#puntaje">
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
     </owl:DatatypeProperty>
 
 </rdf:RDF>
